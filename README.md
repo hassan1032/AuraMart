@@ -49,8 +49,8 @@ JWT_SECRET=
 COOKIE_EXPIRE=
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
-RESEND_API_KEY=
-MAIL_FROM=
+MAIL_USER=
+MAIL_APP_PASSWORD=
 TWILIO_ACCOUNT_SID=
 TWILIO_AUTH_TOKEN=
 TWILIO_PHONE=
@@ -65,7 +65,7 @@ RAZORPAY_KEY_SECRET=
 npm start   # nodemon index.js — http://localhost:4050
 ```
 
-> **Email:** OTP/verification emails are sent via [Resend](https://resend.com) rather than raw SMTP — Render's free-tier network can't reliably reach Gmail's SMTP servers, which caused connection timeouts. Sign up at resend.com and set `RESEND_API_KEY`. Without a verified domain, the default sandbox sender (`onboarding@resend.dev`) can only deliver to the email address you signed up to Resend with — verify a domain (set `MAIL_FROM` to an address on it) before relying on this for real user signups.
+> **Email:** OTP/verification emails are sent via Gmail SMTP (port 587, STARTTLS). `MAIL_APP_PASSWORD` must be a Google **App Password** (Google Account → Security → App Passwords), not the account's regular login password. Note: Gmail SMTP has previously timed out when called from Render's network — if OTP emails fail with a connection error in production, that's an outbound network/provider issue, not a code bug; switching to an HTTP-based email API (e.g. Resend, Brevo) is the reliable fix.
 
 ### Storefront (AuraMart)
 

@@ -1,5 +1,5 @@
 import 'dotenv/config';
-import { Resend } from 'resend';
+import nodemailer from 'nodemailer';
 import ejs from 'ejs';
 import path from 'path';
 import { fileURLToPath } from 'url';
@@ -7,12 +7,23 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
 
-// Lazily construct so it always reads the current env vars
-const getResend = () => new Resend(process.env.RESEND_API_KEY);
-
-// Until a custom domain is verified with Resend, this sandbox address can only
-// deliver to the email you signed up to Resend with — not to arbitrary customers.
-const FROM = process.env.MAIL_FROM || 'AuraMart Team <onboarding@resend.dev>';
+// Create transporter lazily so it always reads the current env vars
+// (avoids stale config when module loads before dotenv is initialised)
+const createTransporter = () =>
+    nodemailer.createTransport({
+        host: 'smtp.gmail.com',
+        port: 587,
+        secure: false,
+        requireTLS: true,
+        family: 4, // force IPv4 — Render's outbound network prefers IPv6, which frequently can't reach Gmail's SMTP servers
+        connectionTimeout: 30000,
+        greetingTimeout: 30000,
+        socketTimeout: 30000,
+        auth: {
+            user: process.env.MAIL_USER,
+            pass: process.env.MAIL_APP_PASSWORD,
+        },
+    });
 
 const SUBJECTS = {
     forgot_password: 'Forgot Password OTP - AuraMart',
@@ -31,13 +42,12 @@ export const sendMail = async (receiver, OTP, type) => {
     const templatePath = path.join(__dirname, '../templates/otp.ejs');
     const html         = await ejs.renderFile(templatePath, { OTP });
 
-    const { error } = await getResend().emails.send({
-        from:    FROM,
+    await createTransporter().sendMail({
+        from:    `AuraMart Team <${process.env.MAIL_USER}>`,
         to:      receiver,
         subject: SUBJECTS[type],
         html,
     });
-    if (error) throw new Error(error.message || 'Failed to send email');
 };
 
 export const sendTrackingMail = async (receiver, order, trackingNumber, estimatedDelivery) => {
@@ -50,13 +60,12 @@ export const sendTrackingMail = async (receiver, order, trackingNumber, estimate
         tracking: true,
     });
 
-    const { error } = await getResend().emails.send({
-        from:    FROM,
+    await createTransporter().sendMail({
+        from:    `AuraMart Team <${process.env.MAIL_USER}>`,
         to:      receiver,
         subject: 'Verification & Shipment Notification - AuraMart',
         html,
     });
-    if (error) throw new Error(error.message || 'Failed to send email');
 
     return true;
 };
