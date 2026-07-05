@@ -28,9 +28,8 @@ const createTransporter = async () =>
     nodemailer.createTransport({
         host: await resolveGmailIPv4(),
         servername: GMAIL_SMTP_HOST,
-        port: 587,
-        secure: false,
-        requireTLS: true,
+        port: 465, // implicit TLS — try this if 587/STARTTLS is blocked outbound
+        secure: true,
         connectionTimeout: 30000,
         greetingTimeout: 30000,
         socketTimeout: 30000,
