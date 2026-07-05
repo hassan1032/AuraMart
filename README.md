@@ -49,8 +49,8 @@ JWT_SECRET=
 COOKIE_EXPIRE=
 GOOGLE_CLIENT_ID=
 GOOGLE_CLIENT_SECRET=
+BREVO_API_KEY=
 MAIL_USER=
-MAIL_APP_PASSWORD=
 TWILIO_ACCOUNT_SID=
 TWILIO_AUTH_TOKEN=
 TWILIO_PHONE=
@@ -64,6 +64,10 @@ RAZORPAY_KEY_SECRET=
 ```bash
 npm start   # nodemon index.js — http://localhost:4050
 ```
+
+> **Email:** OTP/verification emails send through [Brevo](https://www.brevo.com)'s HTTPS transactional email API rather than raw SMTP — Gmail SMTP timed out consistently on Render (both an IPv6 routing issue and, separately, the SMTP ports appearing blocked outbound). Two one-time setup steps in the Brevo dashboard, or every send fails:
+> 1. **Security → Authorised IPs** — turn off the IP allowlist restriction (or add your server's static IP if you have one), otherwise Brevo rejects API calls from Render's IP with a 401.
+> 2. **Senders, Domains & Dedicated IPs** — verify `MAIL_USER`'s email address as a sender, otherwise sends fail because the `sender.email` isn't authorized.
 
 > **Email:** OTP/verification emails are sent via Gmail SMTP (port 587, STARTTLS). `MAIL_APP_PASSWORD` must be a Google **App Password** (Google Account → Security → App Passwords), not the account's regular login password. Note: Gmail SMTP has previously timed out when called from Render's network — if OTP emails fail with a connection error in production, that's an outbound network/provider issue, not a code bug; switching to an HTTP-based email API (e.g. Resend, Brevo) is the reliable fix.
 
