@@ -1,6 +1,6 @@
 // src/api/apis.jsx
 
-const BASE_URL = "http://localhost:4050/api";
+const BASE_URL = `${import.meta.env.VITE_API_URL || "http://localhost:4050"}/api`;
 
 // const api_URL = `${BASE_URL}/api`;
 

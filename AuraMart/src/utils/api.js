@@ -1,5 +1,5 @@
 
-export const BASEURL = "http://localhost:4050";
+export const BASEURL = import.meta.env.VITE_API_URL || "http://localhost:4050";
 
 const APIUser    = `${BASEURL}/api/auth/`;
 const APIProduct = `${BASEURL}/api/`;

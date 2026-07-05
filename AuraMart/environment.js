@@ -1,6 +1,6 @@
 
 const server = {
-    dev: "http://localhost:5000", //localhost backend url
+    dev: "https://auramart-backend-vl5j.onrender.com", //localhost backend url
     prod: "https:"  //backend deployed url
 }
 

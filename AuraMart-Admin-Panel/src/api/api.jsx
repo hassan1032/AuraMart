@@ -3,7 +3,7 @@ import { getToken, removeToken } from "../auth/authToken";
 
 
 export const api = axios.create({
-    baseURL: import.meta.VITE_API_URL,
+    baseURL: import.meta.env.VITE_API_URL,
     headers: {
         Accept: "application/json",
         "Content-Type": "application/json",
