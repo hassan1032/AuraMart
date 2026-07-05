@@ -1,11 +1,19 @@
 import 'dotenv/config';
 import nodemailer from 'nodemailer';
+import dns from 'dns';
 import ejs from 'ejs';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
+
+// smtp.gmail.com has both A and AAAA records. On Render the AAAA (IPv6) address
+// resolves but isn't actually routable, causing "connect ENETUNREACH ...:587".
+// `family: 4` alone isn't reliably honored for the initial DNS step in every
+// Nodemailer/Node version, so force it via a custom lookup as well.
+const forceIPv4Lookup = (hostname, options, callback) =>
+    dns.lookup(hostname, { family: 4 }, callback);
 
 // Create transporter lazily so it always reads the current env vars
 // (avoids stale config when module loads before dotenv is initialised)
@@ -15,7 +23,8 @@ const createTransporter = () =>
         port: 587,
         secure: false,
         requireTLS: true,
-        family: 4, // force IPv4 — Render's outbound network prefers IPv6, which frequently can't reach Gmail's SMTP servers
+        family: 4,
+        lookup: forceIPv4Lookup,
         connectionTimeout: 30000,
         greetingTimeout: 30000,
         socketTimeout: 30000,

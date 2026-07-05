@@ -1,8 +1,13 @@
+import dns from 'dns';
 import express from 'express';
 import mongoose from 'mongoose';
 import cors from 'cors';
 import bodyParser from 'body-parser';
 import { PORT, dbConfig } from './configs/DB.config.js';
+
+// Prefer IPv4 for all outbound DNS lookups — Render's containers resolve AAAA
+// records for hosts like smtp.gmail.com but can't route them, causing ENETUNREACH.
+try { dns.setDefaultResultOrder('ipv4first'); } catch { /* Node < 17, ignore */ }
 
 import colourRoute from './routes/Product Variants/colour.route.js';
 import sizeRoute from './routes/Product Variants/size.route.js';
