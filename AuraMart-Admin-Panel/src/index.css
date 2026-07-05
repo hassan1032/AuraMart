@@ -1,0 +1,107 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+@theme {
+  /* ─── Pinterest-inspired warm palette ──────────────────────────── */
+  --color-primary:       #E63946;
+  --color-primary-hover: #C5303A;
+  --color-primary-light: #FFF1F1;
+  --color-cta:           #F4A261;
+  --color-cta-dark:      #DB7C3E;
+  --color-success:       #7CB342;
+  --color-success-light: #F1F8E9;
+  --color-warning:       #F59E0B;
+  --color-warning-light: #FFFBEB;
+  --color-danger:        #EF4444;
+  --color-danger-light:  #FEF2F2;
+  --color-bg:            #FAF7F2;
+  --color-card:          #FFFFFF;
+  --color-text:          #2B2D42;
+  --color-muted:         #6B7280;
+  --color-border:        #EAEAEA;
+  --color-sidebar:       #2B2D42;
+  --color-sidebar-hover: #3D4060;
+  --color-sidebar-active:#E63946;
+  --font-sans: 'Inter', system-ui, -apple-system, sans-serif;
+  --radius-card: 12px;
+  --shadow-card: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  --shadow-card-hover: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+}
+
+/* ─── Base (layered so Tailwind utilities can override) ─────────── */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html {
+    font-family: 'Inter', system-ui, -apple-system, sans-serif;
+    font-size: 14px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    background-color: #FAF7F2;
+    color: #2B2D42;
+    line-height: 1.6;
+  }
+}
+
+/* ─── Scrollbar ─────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #D1C4B8; border-radius: 9999px; }
+::-webkit-scrollbar-thumb:hover { background: #B0A090; }
+
+.sidebar-scroll::-webkit-scrollbar { width: 4px; }
+.sidebar-scroll::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); }
+
+/* ─── Global transitions ────────────────────────────────────────── */
+* { transition-property: color, background-color, border-color, opacity, box-shadow, transform; transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1); transition-duration: 150ms; }
+.no-transition, .no-transition * { transition: none !important; }
+
+/* ─── Focus ring ────────────────────────────────────────────────── */
+*:focus-visible { outline: 2px solid #E63946; outline-offset: 2px; }
+
+/* ─── Table ─────────────────────────────────────────────────────── */
+.data-table th { font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; color: #6B7280; padding: 0.75rem 1rem; background: #FAF7F2; border-bottom: 1px solid #EAEAEA; }
+.data-table td { padding: 0.875rem 1rem; border-bottom: 1px solid #F5F0EA; vertical-align: middle; }
+.data-table tr:last-child td { border-bottom: none; }
+.data-table tr:hover td { background: #FAF7F2; }
+
+/* ─── Skeleton ──────────────────────────────────────────────────── */
+@keyframes shimmer { 0% { background-position: -200% 0; } 100% { background-position: 200% 0; } }
+.skeleton { background: linear-gradient(90deg, #F0ECE6 25%, #E8E4DE 50%, #F0ECE6 75%); background-size: 200% 100%; animation: shimmer 1.5s infinite; border-radius: 4px; }
+
+/* ─── Animations ────────────────────────────────────────────────── */
+@keyframes fadeInUp { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
+.page-enter { animation: fadeInUp 0.3s ease-out; }
+@keyframes countUp { from { opacity: 0; } to { opacity: 1; } }
+@keyframes pulse-badge { 0%, 100% { opacity: 1; } 50% { opacity: 0.6; } }
+
+/* ─── Toast ─────────────────────────────────────────────────────── */
+.Toastify__toast { border-radius: 10px !important; font-family: 'Inter', sans-serif !important; font-size: 13px !important; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important; }
+.Toastify__toast--success { border-left: 3px solid #7CB342 !important; }
+.Toastify__toast--error   { border-left: 3px solid #E63946 !important; }
+.Toastify__toast--warning { border-left: 3px solid #F59E0B !important; }
+.Toastify__toast--info    { border-left: 3px solid #E63946 !important; }
+
+/* ─── React Select ──────────────────────────────────────────────── */
+.rs__control { border-radius: 8px !important; border-color: #EAEAEA !important; min-height: 40px !important; }
+.rs__control--is-focused { border-color: #E63946 !important; box-shadow: 0 0 0 1px #E63946 !important; }
+.rs__menu { border-radius: 8px !important; border: 1px solid #EAEAEA !important; box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1) !important; }
+.rs__option--is-focused  { background: #FFF1F1 !important; }
+.rs__option--is-selected { background: #E63946 !important; }
+
+/* ─── Jodit Editor ──────────────────────────────────────────────── */
+.jodit-container { border-radius: 8px !important; border: 1px solid #EAEAEA !important; }
+
+/* ─── Drop zone ─────────────────────────────────────────────────── */
+.drop-zone { border: 2px dashed #EAEAEA; border-radius: 12px; transition: all 0.2s; }
+.drop-zone:hover, .drop-zone.active { border-color: #E63946; background: #FFF1F1; }
+
+/* ─── Switch ────────────────────────────────────────────────────── */
+.switch-input:checked + .switch-label { background-color: #E63946; }
+
+/* ─── Number input ──────────────────────────────────────────────── */
+input[type=number]::-webkit-inner-spin-button,
+input[type=number]::-webkit-outer-spin-button { -webkit-appearance: none; margin: 0; }

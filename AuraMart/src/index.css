@@ -1,0 +1,128 @@
+/* Tailwind CSS v4 — MUST be first */
+@import "tailwindcss";
+
+/* Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap');
+
+/* ─── Design Tokens ───────────────────────────────────────────── */
+@theme {
+  --color-primary:       #E63946;
+  --color-primary-dark:  #C5303A;
+  --color-primary-light: #FFF1F1;
+  --color-cta:           #F4A261;
+  --color-cta-dark:      #DB7C3E;
+  --color-cta-light:     #FFF4EE;
+  --color-success:       #7CB342;
+  --color-danger:        #E63946;
+  --color-warning:       #F4A261;
+  --color-bg:            #FAF7F2;
+  --color-card:          #FFFFFF;
+  --color-text:          #2B2D42;
+  --color-muted:         #6B7280;
+  --color-border:        #EAEAEA;
+  --font-sans: 'Inter', ui-sans-serif, system-ui, sans-serif;
+}
+
+/* ─── Base (layered so Tailwind utilities can override) ─────────── */
+@layer base {
+  *, *::before, *::after { box-sizing: border-box; }
+  html, body { overflow-x: hidden; }
+  body {
+    font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+    background: #FAF7F2;
+    color: #2B2D42;
+    line-height: 1.5;
+  }
+  h1, h2, h3, h4, h5, h6 { font-weight: 700; }
+}
+
+/* ─── Custom Scrollbar ─────────────────────────────────────────── */
+::-webkit-scrollbar { width: 5px; height: 5px; }
+::-webkit-scrollbar-track { background: #FAF7F2; }
+::-webkit-scrollbar-thumb { background: #d1c4b8; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #b0a090; }
+
+/* ─── No-scrollbar utility ─────────────────────────────────────── */
+.no-scrollbar { scrollbar-width: none; -ms-overflow-style: none; }
+.no-scrollbar::-webkit-scrollbar { display: none; }
+
+/* ─── Skeleton / Shimmer ───────────────────────────────────────── */
+.skeleton {
+  background: linear-gradient(90deg, #f0ece6 25%, #e8e4de 50%, #f0ece6 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s infinite;
+  border-radius: 6px;
+}
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+/* ─── Cart Drawer ──────────────────────────────────────────────── */
+.cart-backdrop {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+  z-index: 99; opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
+}
+.cart-backdrop.open { opacity: 1; pointer-events: all; }
+.cart-drawer {
+  position: fixed; top: 0; right: 0; height: 100vh;
+  width: 420px; max-width: 100vw; z-index: 100;
+  transform: translateX(100%);
+  transition: transform 0.3s cubic-bezier(0.4,0,0.2,1);
+  background: #fff; box-shadow: -4px 0 30px rgba(0,0,0,0.12);
+}
+.cart-drawer.open { transform: translateX(0); }
+@media (max-width: 480px) { .cart-drawer { width: 100vw; } }
+
+/* ─── Popup Dropdown ───────────────────────────────────────────── */
+.popup-trigger { position: relative; }
+.popup-dropdown-wrapper {
+  position: absolute; top: 100%; left: 0; z-index: 999; padding-top: 8px;
+}
+.popup-dropdown-box {
+  background: #fff; border-radius: 16px;
+  box-shadow: 0 12px 40px rgba(0,0,0,0.12);
+  padding: 20px 24px; min-width: 280px;
+  display: flex; gap: 32px; border: 1px solid #EAEAEA;
+}
+.popup-dropdown-list { list-style: none; flex: 1; min-width: 140px; }
+.popup-dropdown-title {
+  font-size: 11px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: #6B7280; margin-bottom: 10px;
+}
+.popup-dropdown-item {
+  padding: 6px 0; font-size: 14px; color: #2B2D42;
+  cursor: pointer; transition: color 0.15s; text-decoration: none; display: block;
+}
+.popup-dropdown-item:hover { color: #E63946; }
+.popup-dropdown-image img { width: 140px; height: 160px; border-radius: 12px; object-fit: cover; }
+
+/* ─── Scroll-to-Top ────────────────────────────────────────────── */
+.scroll-top-btn {
+  position: fixed; bottom: 28px; right: 28px; z-index: 50;
+  width: 44px; height: 44px; border-radius: 50%;
+  background: #E63946; color: #fff; border: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: center;
+  box-shadow: 0 4px 14px rgba(230,57,70,0.4);
+  transition: background 0.2s, transform 0.2s, opacity 0.3s;
+  opacity: 0; pointer-events: none;
+}
+.scroll-top-btn.visible { opacity: 1; pointer-events: all; }
+.scroll-top-btn:hover { background: #C5303A; transform: translateY(-2px); }
+
+/* ─── Auth Modal ───────────────────────────────────────────────── */
+.auth-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.45);
+  backdrop-filter: blur(6px); z-index: 9999;
+  display: flex; align-items: center; justify-content: center; padding: 20px;
+}
+.auth-modal {
+  background: #fff; border-radius: 20px; width: 100%; max-width: 420px;
+  box-shadow: 0 24px 60px rgba(0,0,0,0.18); overflow: hidden;
+}
+
+/* ─── Scroll helpers ───────────────────────────────────────────── */
+.collections-scroll { display: flex; gap: 16px; overflow-x: auto; padding-bottom: 8px; scrollbar-width: none; }
+.collections-scroll::-webkit-scrollbar { display: none; }
+.scrollbar-hide { scrollbar-width: none; }
+.scrollbar-hide::-webkit-scrollbar { display: none; }

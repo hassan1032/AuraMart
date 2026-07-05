@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AuraMart</title>
+</head>
+
+<body style="margin:0;padding:0;background-color:#f4f4f7;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;">
+
+  <table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#f4f4f7">
+    <tr>
+      <td align="center" style="padding:40px 16px;">
+
+        <table width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:560px;">
+
+          <!-- ── Header ── -->
+          <tr>
+            <td align="center" bgcolor="#E63946" style="border-radius:8px 8px 0 0;padding:32px 40px;">
+              <h1 style="margin:0;color:#ffffff;font-size:26px;font-weight:800;letter-spacing:2px;">
+                AuraMart
+              </h1>
+              <p style="margin:8px 0 0;color:rgba(255,255,255,0.80);font-size:13px;letter-spacing:0.5px;">
+                Your Premium Shopping Destination
+              </p>
+            </td>
+          </tr>
+
+          <!-- ── Body ── -->
+          <tr>
+            <td bgcolor="#ffffff" style="border-radius:0 0 8px 8px;padding:40px 40px 32px;">
+
+              <% if (typeof tracking !=='undefined' && tracking) { %>
+
+                <!-- Tracking email -->
+                <h2 style="margin:0 0 16px;color:#1a1a2e;font-size:20px;font-weight:600;">
+                  Your Order Has Shipped! 🎉
+                </h2>
+                <p style="margin:0 0 20px;color:#555;font-size:15px;line-height:1.6;">
+                  Great news! Your AuraMart order
+                  <strong style="color:#1a1a2e;">#<%= orderId %></strong>
+                  is on its way.
+                </p>
+
+                <!-- Tracking details box -->
+                <table width="100%" cellpadding="0" cellspacing="0" border="0"
+                  style="background:#f5f3ff;border-left:4px solid #7C3AED;border-radius:4px;margin-bottom:24px;">
+                  <tr>
+                    <td style="padding:20px 24px;">
+                      <p style="margin:0 0 8px;color:#555;font-size:13px;">Tracking Number</p>
+                      <p style="margin:0 0 16px;color:#1a1a2e;font-size:18px;font-weight:700;letter-spacing:1px;">
+                        <%= trackingNumber %>
+                      </p>
+                      <p style="margin:0 0 8px;color:#555;font-size:13px;">Estimated Delivery</p>
+                      <p style="margin:0;color:#1a1a2e;font-size:15px;font-weight:600;">
+                        <%= estimatedDelivery %>
+                      </p>
+                    </td>
+                  </tr>
+                </table>
+
+                <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                  <tr>
+                    <td align="center">
+                      <a href="https://www.dhl.com/global-en/home/tracking/tracking-express.html?submit=1&tracking-id=<%= trackingNumber %>"
+                        style="display:inline-block;background-color:#7C3AED;color:#ffffff;text-decoration:none;
+                               font-size:14px;font-weight:600;padding:12px 32px;border-radius:6px;">
+                        Track My Order
+                      </a>
+                    </td>
+                  </tr>
+                </table>
+
+                <% } else { %>
+
+                  <!-- OTP email -->
+                  <h2 style="margin:0 0 12px;color:#1a1a2e;font-size:20px;font-weight:600;">
+                    Your Verification Code
+                  </h2>
+                  <p style="margin:0 0 28px;color:#555;font-size:15px;line-height:1.6;">
+                    Use the one-time password below to continue. This code expires in
+                    <strong style="color:#1a1a2e;">10 minutes</strong>.
+                  </p>
+
+                  <!-- OTP box -->
+                  <table width="100%" cellpadding="0" cellspacing="0" border="0" style="margin-bottom:28px;">
+                    <tr>
+                      <td align="center" bgcolor="#f5f3ff"
+                        style="border:2px dashed #E63946;border-radius:8px;padding:28px 16px;">
+                        <p
+                          style="margin:0 0 8px;color:#E63946;font-size:11px;text-transform:uppercase;letter-spacing:2px;font-weight:600;">
+                          One-Time Password
+                        </p>
+                        <p style="margin:0;color:#E63946;font-size:44px;font-weight:800;letter-spacing:12px;">
+                          <%= OTP %>
+                        </p>
+                      </td>
+                    </tr>
+                  </table>
+
+                  <p style="margin:0;color:#888;font-size:13px;line-height:1.6;text-align:center;">
+                    If you did not request this code, please ignore this email.
+                    Your account remains secure.
+                  </p>
+
+                  <% } %>
+
+            </td>
+          </tr>
+
+          <!-- ── Footer ── -->
+          <tr>
+            <td align="center" style="padding:24px 0 0;">
+              <p style="margin:0;color:#aaa;font-size:12px;line-height:1.8;">
+                © <%= new Date().getFullYear() %> AuraMart. All rights reserved.<br />
+                  This is an automated message — please do not reply.
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+
+</body>
+
+</html>

@@ -1,0 +1,20 @@
+shift+alt+f
+#fcefdc
+                <div style={{textAlign: "center", margin: "40px 60px", position: "relative"}}>
+ 
+                    <img src="/images/vector-img-title-header.svg" alt="Design" style={{marginBottom: "10px", display: "block", marginLeft: "auto", marginRight: "auto"}} />
+
+                    <div style={{display: "flex", alignItems: "center", justifyContent:"center"}}>
+                        <img src="/images/vector-img-line-left.svg" alt="Left Line" style={{width: "30%", height: "auto", marginRight: "10px"}} />
+                        
+                        <span style={{fontFamily: "'Georgia', serif", fontSize: "30px", fontWeight: "bold", color: "#2d1c0f"}}>
+                        Products to pair with
+                        </span>
+                        
+                        <img src="/images/vector-img-line-right.svg" alt="Right Line" style={{width: "30%", height: "auto", marginLeft: "10px"}} />
+
+
+
+                        <img src="/images/vector-img-title-header.svg" alt="Design" style={{ marginBottom: "10px", display: "block", width: "120px", marginLeft: "auto", marginRight: "auto" }} />
+                    </div>
+                </div>
