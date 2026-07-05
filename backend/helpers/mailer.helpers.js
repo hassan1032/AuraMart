@@ -11,7 +11,10 @@ const __dirname  = path.dirname(__filename);
 // (avoids stale config when module loads before dotenv is initialised)
 const createTransporter = () =>
     nodemailer.createTransport({
-        service: 'Gmail',
+        host: 'smtp.gmail.com',
+        port: 465,
+        secure: true,
+        family: 4, // force IPv4 — Gmail SMTP is frequently unreachable over Render's IPv6 outbound network, causing connection timeouts
         auth: {
             user: process.env.MAIL_USER,
             pass: process.env.MAIL_APP_PASSWORD,
