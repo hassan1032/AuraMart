@@ -8,23 +8,29 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname  = path.dirname(__filename);
 
-// smtp.gmail.com has both A and AAAA records. On Render the AAAA (IPv6) address
-// resolves but isn't actually routable, causing "connect ENETUNREACH ...:587".
-// `family: 4` alone isn't reliably honored for the initial DNS step in every
-// Nodemailer/Node version, so force it via a custom lookup as well.
-const forceIPv4Lookup = (hostname, options, callback) =>
-    dns.lookup(hostname, { family: 4 }, callback);
+const GMAIL_SMTP_HOST = 'smtp.gmail.com';
 
-// Create transporter lazily so it always reads the current env vars
-// (avoids stale config when module loads before dotenv is initialised)
-const createTransporter = () =>
+// Nodemailer resolves both A and AAAA records for the SMTP host itself and then
+// picks a RANDOM address from the combined list (see nodemailer/lib/shared/index.js
+// formatDNSValue) — it does NOT honor the documented `family`/`lookup` transport
+// options for this step. On Render the AAAA (IPv6) address isn't routable, so
+// roughly half of connection attempts fail with "connect ENETUNREACH ...:587".
+// Resolving the IPv4 address ourselves and passing it as a literal IP bypasses
+// Nodemailer's own resolver entirely (it skips DNS whenever `host` is already an
+// IP). `servername` is set explicitly so TLS still validates against the real
+// hostname instead of the raw IP.
+const resolveGmailIPv4 = async () => {
+    const addresses = await dns.promises.resolve4(GMAIL_SMTP_HOST);
+    return addresses[0];
+};
+
+const createTransporter = async () =>
     nodemailer.createTransport({
-        host: 'smtp.gmail.com',
+        host: await resolveGmailIPv4(),
+        servername: GMAIL_SMTP_HOST,
         port: 587,
         secure: false,
         requireTLS: true,
-        family: 4,
-        lookup: forceIPv4Lookup,
         connectionTimeout: 30000,
         greetingTimeout: 30000,
         socketTimeout: 30000,
@@ -50,8 +56,9 @@ export const sendMail = async (receiver, OTP, type) => {
 
     const templatePath = path.join(__dirname, '../templates/otp.ejs');
     const html         = await ejs.renderFile(templatePath, { OTP });
+    const transporter  = await createTransporter();
 
-    await createTransporter().sendMail({
+    await transporter.sendMail({
         from:    `AuraMart Team <${process.env.MAIL_USER}>`,
         to:      receiver,
         subject: SUBJECTS[type],
@@ -68,8 +75,9 @@ export const sendTrackingMail = async (receiver, order, trackingNumber, estimate
         estimatedDelivery,
         tracking: true,
     });
+    const transporter = await createTransporter();
 
-    await createTransporter().sendMail({
+    await transporter.sendMail({
         from:    `AuraMart Team <${process.env.MAIL_USER}>`,
         to:      receiver,
         subject: 'Verification & Shipment Notification - AuraMart',
