@@ -362,7 +362,7 @@ export const getAllaccessory = async (req, res) => {
 // Get Single Accessory By User
 export const getAccessoryByUser = async (req, res) => {
     try {
-        const { idOrSlug } = req.body;
+        const idOrSlug = req.query.id || req.query.idOrSlug || req.body.id || req.body.idOrSlug;
         const lat = parseFloat(req.query.lat);
         const lon = parseFloat(req.query.lon);
         let matchCondition = {};

@@ -13,6 +13,7 @@ export default (app) => {
     });
     app.post('/api/add/accessory/admin', auth, addAccessory)
     app.post('/api/genrate/accessory/barcode/admin/:id', auth, generateBarcodeAccescory)
+    app.get('/api/get/single/accessory/by/user', getAccessoryByUser)
     app.post('/api/get/single/accessory/by/user', getAccessoryByUser)
     app.put('/api/update/accessory/admin/:id', auth, updateAccessory)
     app.put('/api/update/accessory/status/admin', auth, updatedaccesorystatus)
